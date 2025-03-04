@@ -38,17 +38,3 @@ Alternatively, download and extract the ZIP from GitHub.
 ## Running the Built Game
 ### Windows / Mac / Linux
 - Navigate to the build folder and run the generated executable (`.exe`, `.app`, or `.x86_64`).
-
-### Android
-- Transfer the `.apk` file to your Android device and install it.
-- Alternatively, use **"Build and Run"** to deploy directly.
-
-### WebGL
-- Open the `index.html` file in a browser, or upload the build to a web host.
-
-## Contributing
-If you'd like to contribute, fork the repository and submit a pull request.
-
-## License
-This project is licensed under [Your License].
-
