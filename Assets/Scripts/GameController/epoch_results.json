@@ -1,0 +1,32 @@
+[
+  {
+    "agent_id": 0,
+    "DistanceTravelled": 0.0,
+    "IsAlive": true
+  },
+  {
+    "agent_id": 1,
+    "DistanceTravelled": 0.0,
+    "IsAlive": true
+  },
+  {
+    "agent_id": 2,
+    "DistanceTravelled": 0.0,
+    "IsAlive": true
+  },
+  {
+    "agent_id": 3,
+    "DistanceTravelled": 0.0,
+    "IsAlive": true
+  },
+  {
+    "agent_id": 4,
+    "DistanceTravelled": 0.0,
+    "IsAlive": true
+  },
+  {
+    "agent_id": 5,
+    "DistanceTravelled": 0.0,
+    "IsAlive": true
+  }
+]

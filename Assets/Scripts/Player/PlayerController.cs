@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ControllerInterface
 {
     CarDriver carDriver;
 
@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void HandleUpdate()
+    public void Action()
     {
         carDriver.input = Input.GetAxisRaw("Horizontal");
     }

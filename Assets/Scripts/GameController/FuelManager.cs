@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class FuelManager : MonoBehaviour
 {
@@ -9,10 +9,12 @@ public class FuelManager : MonoBehaviour
     [SerializeField] Image fuelImage;
 
     [SerializeField] float maxFuel = 100;
-    [SerializeField, Range (0.1f,5)] float fluelConsumtion;
+    [SerializeField, Range(0.1f, 5)] float fluelConsumtion;
     [SerializeField] Gradient gradient;
 
     float currentFuel;
+
+    public float CurrentFuel => currentFuel;
 
     private void Awake()
     {
@@ -34,7 +36,7 @@ public class FuelManager : MonoBehaviour
 
     void UpdateUI()
     {
-        fuelImage.fillAmount = currentFuel/maxFuel;
+        fuelImage.fillAmount = currentFuel / maxFuel;
         fuelImage.color = gradient.Evaluate(currentFuel / maxFuel);
     }
 
@@ -42,7 +44,13 @@ public class FuelManager : MonoBehaviour
     {
         if (currentFuel <= 0)
         {
-            GameController.instance.GameOver(FindAnyObjectByType<CarDriver>());
+            if (GameController.instance.Controller == ControllerClass.Player)
+                GameController.instance.GameOver(FindAnyObjectByType<CarDriver>());
+            else
+            {
+                var carDriver = FindAnyObjectByType<CarDriver>();
+                GameController.instance.GameOver(carDriver);
+            }
         }
     }
 

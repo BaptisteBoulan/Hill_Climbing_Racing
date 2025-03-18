@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,38 +7,50 @@ public class GameController : MonoBehaviour
 
     [SerializeField] GameObject restartCanvas;
     [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameObject dqnPrefab;
     [SerializeField] AgentManager agentManager;
 
-    [SerializeField] bool isPlayer;
+    [SerializeField] ControllerClass controllerClass;
 
-    public bool IsPlayer => isPlayer;
+    public ControllerClass Controller => controllerClass;
 
     public bool isDead = false;
 
-    PlayerController player;
+    // to be changed
+    // PlayerController player;
+    ControllerInterface player;
 
     private void Awake()
     {
         instance = this;
-        if (isPlayer)
+        if (controllerClass == ControllerClass.Player)
         {
-            player = Instantiate(playerPrefab, transform.position, transform.rotation).GetComponent<PlayerController>();
+            player = Instantiate(playerPrefab, transform.position, transform.rotation).GetComponent<ControllerInterface>();
             Time.timeScale = 1;
+        }
+        else if (controllerClass == ControllerClass.NeatAgent)
+        {
+            
+            Time.timeScale = 2;
         }
         else
         {
-            agentManager.InitAgents();
-            Time.timeScale = 5;
+            player = Instantiate(dqnPrefab, transform.position, transform.rotation).GetComponent<ControllerInterface>();
+            Time.timeScale = 1;
         }
     }
 
     public void GameOver(CarDriver car)
     {
         car.IsAlive = false;
-        if (isPlayer)
+        if (controllerClass == ControllerClass.Player)
         {
             isDead = true;
             restartCanvas.SetActive(true);
+        }
+        else if (controllerClass == ControllerClass.DqnAgent)
+        {
+            isDead = true;
         }
     }
 
@@ -50,10 +61,10 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (isPlayer)
+        if (controllerClass != ControllerClass.NeatAgent)
         {
             FuelManager.instance.HandleUpdate();
-            player.HandleUpdate();
+            player.Action();
         }
         else
         {

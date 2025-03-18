@@ -7,10 +7,10 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] SpriteShapeController shapeController;
 
     [Header("Parameters")]
-    [SerializeField, Range (3,1000)] int levelLength;
-    [SerializeField, Range (0.1f, 10)] float xMultiplier;
+    [SerializeField, Range(3, 1000)] int levelLength;
+    [SerializeField, Range(0.1f, 10)] float xMultiplier;
     [SerializeField, Range(0.1f, 10)] float yMultiplier;
-    [SerializeField, Range (0,1)] float curveSmoothness;
+    [SerializeField, Range(0, 1)] float curveSmoothness;
     [SerializeField] float noiseStep;
     [SerializeField] float bottom;
 
@@ -22,7 +22,7 @@ public class TerrainGenerator : MonoBehaviour
 
         for (int i = 0; i < levelLength; i++)
         {
-            if (i !=0) lastPosition = new Vector3(i * xMultiplier, i * yMultiplier * Mathf.PerlinNoise(0,i*noiseStep) / 300);
+            if (i != 0) lastPosition = new Vector3(i * xMultiplier, i * yMultiplier * Mathf.PerlinNoise(0, i * noiseStep) / 300);
             else lastPosition = new Vector3(0, bottom);
 
             shapeController.spline.InsertPointAt(i, lastPosition);
@@ -35,8 +35,8 @@ public class TerrainGenerator : MonoBehaviour
             }
         }
 
-        shapeController.spline.InsertPointAt(levelLength, new Vector3(lastPosition.x,- bottom));
-        shapeController.spline.InsertPointAt(levelLength + 1, new Vector3(0,- bottom));
+        shapeController.spline.InsertPointAt(levelLength, new Vector3(lastPosition.x, -bottom));
+        shapeController.spline.InsertPointAt(levelLength + 1, new Vector3(0, -bottom));
     }
 
 }

@@ -1,0 +1,27 @@
+behaviors:
+  CarBehavior:
+    trainer_type: sac
+    hyperparameters:
+      buffer_size: 100000
+      batch_size: 64
+      learning_rate: 0.0003
+      learning_rate_schedule: constant
+      init_entcoef: 1.0
+      tau: 0.005
+    
+    network_settings:
+      normalize: false
+      hidden_units: 256
+      num_layers: 2
+      vis_encode_type: simple
+
+    reward_signals:
+      extrinsic:
+        strength: 1.0
+        gamma: 0.99
+
+    max_steps: 500000
+    time_horizon: 64
+    summary_freq: 100
+    keep_checkpoints: 5
+    checkpoint_interval: 50000

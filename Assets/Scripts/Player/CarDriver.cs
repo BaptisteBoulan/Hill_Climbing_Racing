@@ -1,6 +1,11 @@
-using System;
 using UnityEngine;
 
+public enum ControllerClass
+{
+    Player,
+    NeatAgent,
+    DqnAgent
+}
 public class CarDriver : MonoBehaviour
 {
     [Header("Tires")]
@@ -14,20 +19,37 @@ public class CarDriver : MonoBehaviour
     [SerializeField] LayerMask ground;
 
     public float input { get; set; }
-    public bool IsPlayer = true;
+    public ControllerClass controllerClass = ControllerClass.Player;
 
-    Agent agent;
+    // Agent agent;
+    ControllerInterface controller;
+
     public bool IsAlive;
     private void Start()
     {
         IsAlive = true;
-        agent = GetComponent<Agent>();
+        if (controllerClass == ControllerClass.Player)
+        {
+            controller = GetComponent<PlayerController>();
+        }
+        else if (controllerClass == ControllerClass.NeatAgent)
+        {
+            controller = GetComponent<NeatAgent>();
+        }
+        else
+        {
+            controller = GetComponent<CarMLAgent>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Action();
+        if (IsAlive)
+        {
+            controller.Action();
+            Action();
+        }
     }
 
 

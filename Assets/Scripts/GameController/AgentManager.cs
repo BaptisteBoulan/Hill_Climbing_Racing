@@ -1,36 +1,26 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class AgentManager : MonoBehaviour
 {
-    [SerializeField] GameObject prefab;
+    [SerializeField] GameObject agentPrefab;
     [SerializeField] float mutationSpeed;
-    [SerializeField] int numAgent;
 
     [SerializeField] float generationDuration;
-    [SerializeField] float timeSpeed;
 
-    Agent[] agents;
+    [SerializeField] string jsonFilePath = "./population.json";
+    [SerializeField] string resultsFilePath = "./epoch_results.json";
 
     public float MutationSpeed => mutationSpeed;
-    public float currentTime = 0;
+    public float currentTime;
 
-    public void InitAgents(Agent[] mothers = null)
+    private void Start()
     {
-        agents = new Agent[numAgent];
-
-        for (int i = 0; i < agents.Length; i++)
-        {
-            Agent mother = null;
-            if (mothers != null && mothers.Length > 0)
-                mother = mothers[i * mothers.Length / agents.Length];
-            var agent = Instantiate(prefab, transform);
-            var car = agent.GetComponent<CarDriver>();
-            car.IsPlayer = false;
-            car.IsAlive = true;
-            agents[i] = agent.GetComponent<Agent>();
-            agents[i].Init(mother);
-        }
+        currentTime = generationDuration;
     }
 
     public void HandleUpdate()
@@ -39,34 +29,108 @@ public class AgentManager : MonoBehaviour
         if (currentTime > generationDuration)
         {
             currentTime = 0;
-            NewGeneration();
+            StartCoroutine(NewGeneration());
         }
     }
 
-    void NewGeneration()
+    IEnumerator NewGeneration()
     {
-        Time.timeScale = timeSpeed;
-        int n = 3;
+        List<AgentResult> epochResults = new List<AgentResult>();
 
-        List<(Agent agent, float score)> agentScores = new List<(Agent, float)>();
-
-
-        for (int i = 0; i < agents.Length; i++)
+        int i = 0;
+        foreach (Transform child in transform)
         {
-            float score = agents[i].Score;
-            agentScores.Add((agents[i].GetComponent<Agent>(), score));
-            Destroy(agents[i].gameObject);
+            NeatAgent agent = child.GetComponent<NeatAgent>();
+            CarDriver driver = child.GetComponent<CarDriver>();
+
+            if (agent != null && driver != null)
+            {
+                epochResults.Add(new AgentResult
+                {
+                    agent_id = i,
+                    DistanceTravelled = agent.Score,
+                    IsAlive = driver.IsAlive
+                });
+                i++;
+            }
+
+            Destroy(child.gameObject);
         }
 
-        agentScores.Sort((x, y) => y.score.CompareTo(x.score));
+        Debug.Log("on attend");
 
-        List<Agent> bestAgents = new List<Agent>();
-        for (int i = 0; i < Mathf.Min(n, agentScores.Count); i++)
+        if (File.Exists(resultsFilePath))
         {
-            bestAgents.Add(agentScores[i].agent);
+            // Save epoch results to JSON
+            string epochJson = JsonConvert.SerializeObject(epochResults, Formatting.Indented);
+            File.WriteAllText(resultsFilePath, epochJson);
+        }
+        else
+        {
+            Debug.Log("Fichier JSON non trouvé !");
         }
 
-        InitAgents(bestAgents.ToArray());
+        yield return new WaitUntil(() => File.Exists(jsonFilePath));
+
+        // Lire le fichier JSON
+        string jsonData = File.ReadAllText(jsonFilePath);
+        Debug.Log("JSON lu !");
+        yield return new WaitUntil(() => !string.IsNullOrWhiteSpace(File.ReadAllText(jsonFilePath)));
+
+        PopulationData population = JsonConvert.DeserializeObject<PopulationData>(jsonData);
+
+        yield return new WaitForSeconds(1f);
+        Debug.Log("go go go");
+        yield return new WaitUntil(() =>
+        {
+            jsonData = File.ReadAllText(jsonFilePath);
+            population = JsonConvert.DeserializeObject<PopulationData>(jsonData);
+            return population != null && population.agents.Count > 0;
+        });
+
+        // Créer de nouveaux agents et initialiser avec les poids/biais du JSON
+        List<NeatAgent> newAgents = new List<NeatAgent>();
+
+
+        foreach (var agentData in population.agents)
+        {
+            GameObject newAgentObject = Instantiate(agentPrefab, Vector2.zero, Quaternion.identity, transform);
+            NeatAgent newAgent = newAgentObject.GetComponent<NeatAgent>();
+
+            newAgent.Init(agentData.weights, agentData.bias);
+            newAgents.Add(newAgent);
+        }
+
+        // Supprimer le contenu du fichier JSON
+        File.WriteAllText(jsonFilePath, string.Empty);
+
+        Debug.Log("Nouvelle génération créée avec succès et JSON vidé !");
     }
 
 }
+
+[System.Serializable]
+public class PopulationData
+{
+    public int n_agents;
+    public int input_dim;
+    public int output_dim;
+    public List<AgentData> agents;
+}
+
+[System.Serializable]
+public class AgentData
+{
+    public int agent_id;
+    public List<float> weights;
+    public List<float> bias;
+}
+
+[System.Serializable]
+public class AgentResult
+{
+    public int agent_id;
+    public float DistanceTravelled;
+    public bool IsAlive;
+}
+

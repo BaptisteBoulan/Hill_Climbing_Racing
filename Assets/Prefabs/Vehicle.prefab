@@ -637,8 +637,8 @@ MonoBehaviour:
   rotationSpeed: 1000
   ground:
     serializedVersion: 2
-    m_Bits: 0
-  IsPlayer: 1
+    m_Bits: 64
+  controllerClass: 0
   IsAlive: 0
 --- !u!114 &4933699782313048934
 MonoBehaviour:

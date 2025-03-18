@@ -8,7 +8,7 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        if (GameController.instance.IsPlayer)
+        if (GameController.instance.Controller != ControllerClass.NeatAgent)
             player = FindAnyObjectByType<CarDriver>().transform;
         else
             transform.position += offset;

@@ -296,7 +296,7 @@ Transform:
   m_GameObject: {fileID: 258218606}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.29, y: 5.44, z: 0}
+  m_LocalPosition: {x: 2.32, y: -0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fuelImage: {fileID: 1458953586}
   maxFuel: 100
-  fluelConsumtion: 1.92
+  fluelConsumtion: 4
   gradient:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0.042049408, a: 1}
@@ -361,9 +361,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   restartCanvas: {fileID: 1839509300}
   playerPrefab: {fileID: 6629481882868249776, guid: 139173d23427cb34d8cbb933b37130c2, type: 3}
+  dqnPrefab: {fileID: 6629481882868249776, guid: 407d5f43c42206c48a4a6575fa4db9cf, type: 3}
   agentManager: {fileID: 1193601183}
-  isPlayer: 0
-  isDead: 0
+  controllerClass: 1
+  isDead: 1
 --- !u!1 &279552900
 GameObject:
   m_ObjectHideFlags: 0
@@ -3528,11 +3529,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ab7558a3faed341b0a05d2d381293e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6629481882868249776, guid: f1f2061b08098b646973adfe73916172, type: 3}
+  agentPrefab: {fileID: 6629481882868249776, guid: f1f2061b08098b646973adfe73916172, type: 3}
   mutationSpeed: 0.05
-  numAgent: 20
-  generationDuration: 20
-  timeSpeed: 5
+  generationDuration: 15
+  jsonFilePath: Assets/Ressources/Data/population.json
+  resultsFilePath: Assets/Ressources/Data/epoch_results.json
   currentTime: 0
 --- !u!4 &1193601184
 Transform:
