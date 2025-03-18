@@ -363,7 +363,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 6629481882868249776, guid: 139173d23427cb34d8cbb933b37130c2, type: 3}
   dqnPrefab: {fileID: 6629481882868249776, guid: 407d5f43c42206c48a4a6575fa4db9cf, type: 3}
   agentManager: {fileID: 1193601183}
-  controllerClass: 1
+  controllerClass: 0
   isDead: 1
 --- !u!1 &279552900
 GameObject:

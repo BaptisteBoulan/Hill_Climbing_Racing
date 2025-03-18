@@ -7,7 +7,6 @@ public class NeatAgent : MonoBehaviour, ControllerInterface
     [SerializeField] Rigidbody2D tireB;
     [SerializeField] LayerMask ground;
 
-    AgentManager manager;
     CarDriver carDriver;
     Rigidbody2D rb;
 
@@ -20,12 +19,10 @@ public class NeatAgent : MonoBehaviour, ControllerInterface
 
     public void Init(List<float> weights = null, List<float> bias = null)
     {
-        manager = GetComponentInParent<AgentManager>();
         carDriver = GetComponentInParent<CarDriver>();
         rb = GetComponent<Rigidbody2D>();
 
         int weightSize = 10;
-        int biasSize = 2;
 
         if (weights != null && bias != null)
         {
