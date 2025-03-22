@@ -1,7 +1,7 @@
-# Hill Climing Racing NEAT
+# Hill Climb Racing NEAT
 
 ## Overview
-This is a Unity-based project developed using Unity **[6000.0.29f1]**. This README provides instructions on how to build and execute the game.
+This is a Unity-based project developed using Unity [6000.0.29f1]. The goal of the project is to train an agent to play Hill Climb Racing using various reinforcement learning (RL) algorithms. This README provides instructions on how to build and execute the game.
 
 ## Prerequisites
 Ensure you have the following installed:
