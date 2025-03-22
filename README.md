@@ -13,7 +13,7 @@ Ensure you have the following installed:
 ## Cloning the Repository
 To get the project, run:
 ```sh
-git clone https://github.com/your-username/MyUnityProject.git
+git clone https://github.com/BaptisteBoulan/Hill_Climbing_Racing.git
 cd MyUnityProject
 ```
 
